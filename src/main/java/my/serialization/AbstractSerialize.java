@@ -2,10 +2,10 @@ package my.serialization;
 
 public abstract class AbstractSerialize {
 
-    public abstract byte[] serialize();
+    public abstract byte[] serialize() throws Exception;
 
-    public abstract int size();
+    //public abstract short size();
 
-    public abstract AbstractSerialize fromByteArray(byte[] data);
+    public abstract void fromByteArray(byte[] data);
 
 }
