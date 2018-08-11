@@ -15,13 +15,15 @@ public class Constants {
 
     private static Map<TypeFieldEnum, Short> mapSizeDataForPrimitive;
 
+    private static final String methodNameGetFieldId = "fieldId";
+
     //private static
 
 
     public static void initConstant() {
-        String packageNameContainsAllAnno = "anno.field";
+        String packageNameContainsAllAnnotation = "anno.field";
 
-        Reflections reflections = new Reflections(packageNameContainsAllAnno);
+        Reflections reflections = new Reflections(packageNameContainsAllAnnotation);
         setAllClassAnnotationForField = reflections.getSubTypesOf(Annotation.class);
 
 
@@ -94,12 +96,16 @@ public class Constants {
         TypeFieldEnum t = getTypeFieldByAnnotationClass(annotation.annotationType());
         return mapSizeDataForPrimitive.containsKey(t);
     }
-    public static short getSizeDataForPrimitiveField(Annotation annotation){
-        if(!annotationIsForPrimitiveField(annotation)){
+
+    public static short getSizeDataForPrimitiveField(Annotation annotation) {
+        if (!annotationIsForPrimitiveField(annotation)) {
             throw new IllegalArgumentException("this annotation is not for primitive field");
         }
-        TypeFieldEnum t= mapTypeFieldByClass.get(annotation.annotationType());
+        TypeFieldEnum t = mapTypeFieldByClass.get(annotation.annotationType());
         return mapSizeDataForPrimitive.get(t);
     }
 
+    public static String getMethodNameGetFieldId() {
+        return methodNameGetFieldId;
+    }
 }
