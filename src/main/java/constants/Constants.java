@@ -1,6 +1,7 @@
 package constants;
 
 import org.reflections.Reflections;
+import typesupport.TypeSupported;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -16,6 +17,10 @@ public class Constants {
     private static Map<TypeFieldEnum, Short> mapSizeDataForPrimitive;
 
     private static final String methodNameGetFieldId = "fieldId";
+
+    private static Set<Class> setClassPrimitive;
+
+    private static Map<Class<? extends Annotation>, TypeSupported> mapAnnotationToTypeSupport;
 
     //private static
 
@@ -80,6 +85,14 @@ public class Constants {
                 }
             }
         }
+
+
+        // khởi tạo map các kiểu sẽ hỗ trợ
+        for (TypeSupported t : TypeSupported.values()) {
+            mapAnnotationToTypeSupport.put(t.getClassCorrespond(), t);
+        }
+
+
 
     }
 

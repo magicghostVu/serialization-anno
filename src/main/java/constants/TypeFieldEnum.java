@@ -10,5 +10,6 @@ public enum TypeFieldEnum {
     FloatField,
     CharField,
     StringField,
-    EnumField
+    EnumField,
+    ListField
 }

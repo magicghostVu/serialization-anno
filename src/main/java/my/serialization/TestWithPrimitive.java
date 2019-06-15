@@ -1,6 +1,7 @@
 package my.serialization;
 
 import anno.field.extended_field.EnumField;
+import anno.field.extended_field.ListField;
 import anno.field.extended_field.StringField;
 import anno.field.primitive.*;
 import anno.field.utils.BufferUtils;
@@ -52,11 +53,25 @@ public class TestWithPrimitive extends AbstractSerialize {
     private MariedStatus mariedStatus;
 
 
+    // với list thì chỉ support element class là 11 loại đã cho
+    @ListField(fieldId = 7, elementClass = Integer.class, classElementMayBeAbstract = false)
+    private List<Integer> historyGold;
+
+
     @Override
     public byte[] serialize() throws Exception {
 
 
         //todo: nên verify metadata với data trước khi serialize
+
+
+
+
+
+
+
+
+
 
 
         //todo: test thử  xem sao
@@ -65,8 +80,24 @@ public class TestWithPrimitive extends AbstractSerialize {
         Field[] allField = Utils.getAllField(getClass());
 
 
+
+
+        /*todo: ở đây nên tạo một map tất cả các lớp(lớp thật sự) đang có cho các trường như List, Map, Object
+        * trong trường hợp nếu các trường này có các cờ maybe abstract = true
+        * */
+
+        //todo: duyệt qua một lần nữa ????, dù sao số lượng các trường cũng có vẻ khá ít (ít hơn 128) nên duyệt qua một lần nữa chắc không sao
+
+
+
+
+
+
+
+
         TreeMap<Byte, MyPair<Annotation, Field>> mapIndexedField = new TreeMap<>();
 
+        // lọc các field hợp lệ, và put data vào map indexed field
         Arrays.stream(allField).filter(f -> {
 
             // lấy tất cả các anno của field ra
@@ -176,6 +207,15 @@ public class TestWithPrimitive extends AbstractSerialize {
 
                     break;
                 }
+
+                case ListField:{
+
+                    ListField listFieldAnnotation= (ListField)annotationTarget;
+
+                    mapIndexedField.put(listFieldAnnotation.fieldId(), new MyPair<>(listFieldAnnotation, field));
+
+                    break;
+                }
                 default: {
                     break;
                 }
@@ -233,6 +273,12 @@ public class TestWithPrimitive extends AbstractSerialize {
                         byte[] strNameEumByteArr = nameEnum.getBytes(Charset.forName("utf-8"));
 
                         sizeData += strNameEumByteArr.length + Short.BYTES; // tương tự như đối với String, vì sẽ lưu enum dưới dang string
+
+
+                        break;
+                    }
+
+                    case ListField:{
 
 
                         break;
@@ -608,6 +654,9 @@ public class TestWithPrimitive extends AbstractSerialize {
                     }
                 }
             } catch (Exception e) {
+                //s
+
+
                 //todo: ghi log
                 e.printStackTrace();
             }
